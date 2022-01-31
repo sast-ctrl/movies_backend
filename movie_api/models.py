@@ -48,3 +48,11 @@ class Rating(models.Model):
 
     def __str__(self):
         return self.movies.title + "->" + self.author.username
+
+class Watchlist(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.author.username + " / " + self.movie.title
