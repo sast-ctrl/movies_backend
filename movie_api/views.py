@@ -12,6 +12,8 @@ from django_rest_passwordreset.signals import reset_password_token_created
 from rest_framework import generics, permissions
 from django.http import Http404
 
+from django.contrib.auth.models import User
+
 
 class MovieLists(APIView):
     # permission_classes=(permissions.IsAuthenticated,)
@@ -57,7 +59,45 @@ class MovieDetails(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-    ## ---------------------------------------------------------------------
+class RatingsList(APIView):
+    # permission_classes=(permissions.AllowAny,)
+    # Getting all the ratings list
+    def get(self, request, format=None):
+        ratings = Rating.objects.all()
+        serializer = RatingSerializer(ratings, many=True)
+        return Response(serializer.data)
+
+    # Creating a new rating
+    def post(self, request, format=None):
+        # AnonymousUser
+        # is_anom_user = self.request.user == "AnonymousUser"
+        serializer = RatingSerializer(data=request.data)
+        if serializer.is_valid():
+            print(self.request.user)
+            print(request.data)
+            print()
+            if 'author' in request.data:
+                serializer.save()
+            else:
+                # serializer.save(author=1 if is_anom_user else self.request.user)
+                serializer.save(author=self.request.user)
+            # instance = serializer.save()
+            # instance.author = request.user
+            # instance.save()
+            return Response(serializer.data, status.HTTP_201_CREATED)
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+
+    def get_user(self):
+        
+        user = self.request.user
+        return user
+
+    def perform_create(self, serializer):
+        
+        serializer.save(author=self.get_user())
+    # Data
+
+## ---------------------------------------------------------------------
 
 # class MovieListView(generics.ListCreateAPIView):
     # permission_classes=(permissions.AllowAny,)

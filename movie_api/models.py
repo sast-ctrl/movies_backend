@@ -37,7 +37,7 @@ class Movie(models.Model):
 
 
 class Rating(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     rating = models.PositiveSmallIntegerField(validators=[MaxValueValidator(5)])
     comment = models.TextField()
