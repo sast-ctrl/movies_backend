@@ -5,16 +5,16 @@ class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         
-    model = Movie
+        model = Movie
 
 class RatingSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
 
-    model = Rating
+        model = Rating
 
 class WatchlistSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
 
-    model = Watchlist
+        model = Watchlist
