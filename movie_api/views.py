@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Movie, Rating, Watchlist
-from .serializers import MovieSerializer, RatingSerializer, WatchlistSerializer, AuthorWatchlistSerializer
+from .serializers import MovieSerializer, RatingSerializer, RatingSaveSerializer, WatchlistSerializer, AuthorWatchlistSerializer, WatchlistUserSerializer
 
 from django_rest_passwordreset.signals import reset_password_token_created
 from rest_framework import generics, permissions
@@ -69,19 +69,15 @@ class RatingsList(APIView):
     def post(self, request, format=None):
         # AnonymousUser
         # is_anom_user = self.request.user == "AnonymousUser"
-        serializer = RatingSerializer(data=request.data)
+        serializer = RatingSaveSerializer(data=request.data)
         if serializer.is_valid():
-            print(self.request.user)
-            print(request.data)
-            print()
+            # print(self.request.user)
+            # print(request.data)
+            # print()
             if 'author' in request.data:
                 serializer.save()
             else:
-                # serializer.save(author=1 if is_anom_user else self.request.user)
                 serializer.save(author=self.request.user)
-            # instance = serializer.save()
-            # instance.author = request.user
-            # instance.save()
             return Response(serializer.data, status.HTTP_201_CREATED)
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
@@ -107,4 +103,33 @@ class UserDetails(APIView):
         user = self.get_object(pk)
         serializer = AuthorWatchlistSerializer(user)
         return Response(serializer.data)
+
+    # Create a new Watchlist
+    def post(self, request, format=None):
+        print(request.data)
+        print("Enter-----------------------------")
+        serializer = WatchlistSerializer(data=request.data)
+        print("Enter-----------------------------")
+        if serializer.is_valid():
+            if 'author' in request.data:
+                serializer.save()
+            else:
+                serializer.save(author=self.request.user)
+            return Response(serializer.data, status.HTTP_201_CREATED)
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
         
+class UserWatchlistList(APIView):
+
+    # Create a new Watchlist
+    def post(self, request, format=None):
+        print(request.data)
+        print("Enter-----------------------------")
+        serializer = WatchlistUserSerializer(data=request.data)
+        print("Enter-----------------------------")
+        if serializer.is_valid():
+            if 'author' in request.data:
+                serializer.save()
+            else:
+                serializer.save(author=self.request.user)
+            return Response(serializer.data, status.HTTP_201_CREATED)
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)    

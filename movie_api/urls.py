@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import MovieLists, MovieDetails, RatingsList, UserDetails#, MovieListView
+from .views import MovieLists, MovieDetails, RatingsList, UserDetails, UserWatchlistList#, MovieListView
 from rest_framework_simplejwt import views as jwt_views
 
 urlpatterns = [
@@ -8,6 +8,7 @@ urlpatterns = [
 
     path('ratings/', RatingsList.as_view()),
 
+    path('users/', UserWatchlistList.as_view()),
     path('users/<int:pk>/', UserDetails.as_view(), name='user_detail'),
 
     path('token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import socket # For IP address
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,8 +27,14 @@ SECRET_KEY = 'django-insecure-x^&a2g-2s(s&6wq0ddex=2dv#)0pj!_29eek!7iraqi*v*!5i(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+hostname = socket.gethostname()
+local_ip = socket.gethostbyname_ex(hostname)
+# ALLOWED_HOSTS = [str(local_ip) + ":8000"]
+# ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '[::1]']
+# ALLOWED_HOSTS = ['192.168.0.7']
+ALLOWED_HOSTS = [local_ip[-1][-1], '.localhost', '127.0.0.1']
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
 
@@ -53,7 +60,9 @@ REST_FRAMEWORK={
     ['rest_framework_simplejwt.authentication.JWTAuthentication',]
 }
 
-SIMPLE_JWT = {'ACCESS_TOKEN_LIFETIME':timedelta(days=1),}
+SIMPLE_JWT = {'ACCESS_TOKEN_LIFETIME':timedelta(days=1),
+'REFRESH_TOKEN_LIFETIME':timedelta(days=7)
+}
 
 
 MIDDLEWARE = [

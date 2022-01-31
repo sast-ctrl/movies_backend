@@ -27,10 +27,26 @@ class RatingSerializer(serializers.ModelSerializer):
 
         model = Rating
 
+class RatingSaveSerializer(serializers.ModelSerializer):
+
+    # author = AuthorSerializer(many=False, read_only=True)
+    class Meta:
+        fields = [
+            'id',
+            'author',
+            'movie',
+            'rating',
+            'comment',
+            'created_at'
+        ]
+
+        model = Rating
+
 class MovieSerializer(serializers.ModelSerializer):
     ratings = RatingSerializer(many=True, read_only=True)
     class Meta:
         fields = [
+            'id',
             'title',
             'release_date',
             'genre',
@@ -51,7 +67,6 @@ class WatchlistMovieSerializer(serializers.ModelSerializer):
         model = Movie
 
 class WatchlistSerializer(serializers.ModelSerializer):
-    # movie = MovieSerializer(many=False, read_only=True, context={'fields': ['title']})
     movie = WatchlistMovieSerializer(many=False, read_only=True)
     class Meta:
         fields = [
@@ -59,8 +74,18 @@ class WatchlistSerializer(serializers.ModelSerializer):
             'movie',
             'created_at'
         ]
-
         model = Watchlist
+
+class WatchlistUserSerializer(serializers.ModelSerializer):
+    # movie = WatchlistMovieSerializer(many=False, read_only=True)
+    class Meta:
+        fields = [
+            'id',
+            'movie',
+            'created_at'
+        ]
+        model = Watchlist
+
 class AuthorWatchlistSerializer(serializers.ModelSerializer):
     # Text
     watchlist = WatchlistSerializer(many = True, read_only=True)
