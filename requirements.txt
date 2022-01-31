@@ -2,3 +2,4 @@ PostgreSQL psycopg
 djangorestframework
 django
 django-cors-headers
+djangorestframework_simplejwt
