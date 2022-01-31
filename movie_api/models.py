@@ -2,6 +2,10 @@ from django.db import models
 from datetime import datetime
 from django.urls import reverse
 from django.template.defaultfilters import slugify
+
+from django.contrib.auth.models import User
+
+from django.core.validators import MaxValueValidator
 # Create your models here.
 
 
@@ -30,3 +34,17 @@ class Movie(models.Model):
         value = self.title
         self.slug = slugify(value,)
         super().save(*args, **kwargs)
+
+
+class Rating(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    movies = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    rating = models.PositiveSmallIntegerField(validators=[MaxValueValidator(5)])
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('created_at',)
+
+    def __str__(self):
+        return self.movies.title + "->" + self.author.username
