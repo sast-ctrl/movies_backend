@@ -38,7 +38,7 @@ class Movie(models.Model):
 
 class Rating(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    movies = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     rating = models.PositiveSmallIntegerField(validators=[MaxValueValidator(5)])
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -47,12 +47,15 @@ class Rating(models.Model):
         ordering = ('created_at',)
 
     def __str__(self):
-        return self.movies.title + "->" + self.author.username
+        return self.movie.title + "->" + self.author.username
 
 class Watchlist(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('-created_at',)
 
     def __str__(self):
         return self.author.username + " / " + self.movie.title
