@@ -38,7 +38,7 @@ class Movie(models.Model):
 
 class Rating(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='ratings')
     rating = models.PositiveSmallIntegerField(validators=[MaxValueValidator(5)])
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
