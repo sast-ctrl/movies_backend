@@ -6,13 +6,24 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Movie, Rating, Watchlist
-from .serializers import MovieSerializer, RatingSerializer, RatingSaveSerializer, WatchlistSerializer, AuthorWatchlistSerializer, WatchlistUserSerializer
+from .serializers import MovieSerializer, RatingSerializer, RatingSaveSerializer, WatchlistSerializer, AuthorWatchlistSerializer, WatchlistUserSerializer, SignupSerializer
 
 from django_rest_passwordreset.signals import reset_password_token_created
 from rest_framework import generics, permissions
 from django.http import Http404
 
 from django.contrib.auth.models import User
+from rest_framework.permissions import AllowAny
+
+class SignupView(APIView):
+    permission_classes = [AllowAny]
+    # Create new user
+    def post(self, request, format=None):
+        serializer = SignupSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class MovieLists(APIView):
@@ -93,6 +104,7 @@ class RatingsDetails(APIView):
         rating = self.get_object(pk)
         rating.delete()
         return Response(status=status.HTTP_202_ACCEPTED)
+
 
 class UserDetails(APIView):
 
