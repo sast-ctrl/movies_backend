@@ -2,6 +2,8 @@ from rest_framework import serializers
 from .models import Movie, Rating, Watchlist
 from django.contrib.auth.models import User
 
+from django.db.models import Avg # for avg_rating
+
 class AuthorSerializer(serializers.ModelSerializer):
     
     class Meta:
@@ -44,10 +46,15 @@ class RatingSaveSerializer(serializers.ModelSerializer):
 
 class MovieSerializer(serializers.ModelSerializer):
     ratings = RatingSerializer(many=True, read_only=True)
+    avg_rating = serializers.SerializerMethodField()
+
+    def get_avg_rating(self, ob):
+        return ob.ratings.all().aggregate(Avg('rating'))['rating__avg'] or 0
     class Meta:
         fields = [
             'id',
             'title',
+            'avg_rating',
             'release_date',
             'genre',
             'plot',

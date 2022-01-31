@@ -16,7 +16,6 @@ from django.contrib.auth.models import User
 
 
 class MovieLists(APIView):
-    # permission_classes=(permissions.IsAuthenticated,)
     """
     List all movies, or create a new movie.
     """
@@ -58,8 +57,6 @@ class MovieDetails(APIView):
 
 
 class RatingsList(APIView):
-    # permission_classes=(permissions.AllowAny,)
-    # Getting all the ratings list
     def get(self, request, format=None):
         ratings = Rating.objects.all()
         serializer = RatingSerializer(ratings, many=True)
@@ -67,13 +64,8 @@ class RatingsList(APIView):
 
     # Creating a new rating
     def post(self, request, format=None):
-        # AnonymousUser
-        # is_anom_user = self.request.user == "AnonymousUser"
         serializer = RatingSaveSerializer(data=request.data)
         if serializer.is_valid():
-            # print(self.request.user)
-            # print(request.data)
-            # print()
             if 'author' in request.data:
                 serializer.save()
             else:
@@ -89,7 +81,18 @@ class RatingsList(APIView):
     def perform_create(self, serializer):
         
         serializer.save(author=self.get_user())
-    # Data
+    
+class RatingsDetails(APIView):
+    def get_object(self, pk):
+        try:
+            return Rating.objects.get(pk=pk)
+        except Rating.DoesNotExist:
+            raise Http404
+
+    def delete(self, request, pk):
+        rating = self.get_object(pk)
+        rating.delete()
+        return Response(status=status.HTTP_202_ACCEPTED)
 
 class UserDetails(APIView):
 
@@ -106,10 +109,7 @@ class UserDetails(APIView):
 
     # Create a new Watchlist
     def post(self, request, format=None):
-        print(request.data)
-        print("Enter-----------------------------")
         serializer = WatchlistSerializer(data=request.data)
-        print("Enter-----------------------------")
         if serializer.is_valid():
             if 'author' in request.data:
                 serializer.save()
@@ -122,10 +122,7 @@ class UserWatchlistList(APIView):
 
     # Create a new Watchlist
     def post(self, request, format=None):
-        print(request.data)
-        print("Enter-----------------------------")
         serializer = WatchlistUserSerializer(data=request.data)
-        print("Enter-----------------------------")
         if serializer.is_valid():
             if 'author' in request.data:
                 serializer.save()
