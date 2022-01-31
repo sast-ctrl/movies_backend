@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Movie, Rating, Watchlist
-from .serializers import MovieSerializer, RatingSerializer, WatchlistSerializer
+from .serializers import MovieSerializer, RatingSerializer, WatchlistSerializer, AuthorWatchlistSerializer
 
 from django_rest_passwordreset.signals import reset_password_token_created
 from rest_framework import generics, permissions
@@ -34,9 +34,7 @@ class MovieLists(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class MovieDetails(APIView):
-    """
-    Retrieve, update or delete a movie instance.
-    """
+
     def get_object(self, slug):
         try:
             return Movie.objects.get(slug=slug)
@@ -97,13 +95,16 @@ class RatingsList(APIView):
         serializer.save(author=self.get_user())
     # Data
 
-## ---------------------------------------------------------------------
+class UserDetails(APIView):
 
-# class MovieListView(generics.ListCreateAPIView):
-    # permission_classes=(permissions.AllowAny,)
-    # queryset=Movie.objects.all()
-    # serializer_class= MovieSerializer
+    def get_object(self, pk):
+        try:
+            return User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            raise Http404
 
-# class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
-#     queryset=Movie.objects.all()
-#     serializer_class= MovieSerializer
+    def get(self, request, pk, format=None):
+        user = self.get_object(pk)
+        serializer = AuthorWatchlistSerializer(user)
+        return Response(serializer.data)
+        

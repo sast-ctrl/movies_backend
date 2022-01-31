@@ -51,7 +51,7 @@ class Rating(models.Model):
 
 class Watchlist(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='watchlist')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
