@@ -14,11 +14,12 @@ from django.http import Http404
 
 
 class MovieLists(APIView):
-    
+    # permission_classes=(permissions.IsAuthenticated,)
     """
     List all movies, or create a new movie.
     """
     def get(self, request, format=None):
+        
         movies= Movie.objects.all()
         serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data)
@@ -59,8 +60,9 @@ class MovieDetails(APIView):
     ## ---------------------------------------------------------------------
 
 # class MovieListView(generics.ListCreateAPIView):
-#     queryset=Movie.objects.all()
-#     serializer_class= MovieSerializer
+    # permission_classes=(permissions.AllowAny,)
+    # queryset=Movie.objects.all()
+    # serializer_class= MovieSerializer
 
 # class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
 #     queryset=Movie.objects.all()
