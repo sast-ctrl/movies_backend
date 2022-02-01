@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import socket # For IP address
+# Configure Django App for Heroku.
+import django_heroku
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,7 +35,8 @@ local_ip = socket.gethostbyname_ex(hostname)
 # ALLOWED_HOSTS = [str(local_ip) + ":8000"]
 # ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '[::1]']
 # ALLOWED_HOSTS = ['192.168.0.7']
-ALLOWED_HOSTS = [local_ip[-1][-1], '.localhost', '127.0.0.1']
+# ALLOWED_HOSTS = [local_ip[-1][-1], '.localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -68,6 +72,7 @@ SIMPLE_JWT = {'ACCESS_TOKEN_LIFETIME':timedelta(days=1),
 MIDDLEWARE = [
     
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',     # new
     'django.middleware.common.CommonMiddleware',
@@ -150,6 +155,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+django_heroku.settings(locals())
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
