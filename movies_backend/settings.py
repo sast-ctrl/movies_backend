@@ -58,7 +58,7 @@ REST_FRAMEWORK={
     ['rest_framework_simplejwt.authentication.JWTAuthentication',]
 }
 
-SIMPLE_JWT = {'ACCESS_TOKEN_LIFETIME':timedelta(days=1),
+SIMPLE_JWT = {'ACCESS_TOKEN_LIFETIME':timedelta(days=3),
 'REFRESH_TOKEN_LIFETIME':timedelta(days=7)
 }
 

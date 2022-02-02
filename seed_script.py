@@ -23,21 +23,13 @@ if mode[index_num] == 'one_movie' :
 
     search_fields = ['title', 'release_date', 'genres', 'overview']
     movie_api_fields = ['title', 'release_date', 'genre', 'plot']
-    # print(data['adult', 'status'])
-
-    # print('Begin Loop ' + '-'*20)
 
     parsed_data = {}
     for field in search_fields:
-        # print(field)
         if isinstance(data[field], list):
-            # print(data[field][0]['name'])
             parsed_data[movie_api_fields[search_fields.index(field)]] = data[field][0]['name']
         else:
-            # print(data[field])
             parsed_data[movie_api_fields[search_fields.index(field)]] = data[field]
-        # print('-'*25)
-    # print('End Loop ' + '-'*20)
 
     print(parsed_data)
 
@@ -78,9 +70,6 @@ elif mode[index_num] == 'top_rated_movies':
         {"id":10752,"name":"War"}, 
         {"id":37,"name":"Western"}]
 
-    print(genre_ids[0])
-    # print([x for x in genre_ids if x['id'] == 35][0])
-
     def get_genre_id(id_num):
         if type(id_num) is int:
             genre_dict = [x for x in genre_ids if x['id'] == id_num]
@@ -92,9 +81,6 @@ elif mode[index_num] == 'top_rated_movies':
         else:
             print("Error - Non Valid Genre ID field")
             raise ValueError
-            
-    # print(get_genre_id(37))
-    # print(get_genre_id('37'))
 
 
     response = requests.get( base_url, params=params )
@@ -128,7 +114,7 @@ elif mode[index_num] == 'top_rated_movies':
         raw_data.clear()
         raw_data = dict( response.json() )
         
-        loop_range = 2
+        loop_range = 3
         # loop_range = len(raw_data['results'])
         search_fields = ['title', 'release_date', 'genre_ids', 'overview']
         movie_api_fields = ['title', 'release_date', 'genre', 'plot']
