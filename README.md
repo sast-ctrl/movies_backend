@@ -1,7 +1,35 @@
+<h1>Table of contents:</h1>
+
+- [Getting started with the project](#getting-started-with-the-project)
+  - [Running the server locally](#running-the-server-locally)
+    - [Configuring the database](#configuring-the-database)
+    - [Applying migrations](#applying-migrations)
+    - [Running the server](#running-the-server)
+  - [Using Heroku to access the backend](#using-heroku-to-access-the-backend)
+- [API Instructions](#api-instructions)
+  - [Movies](#movies)
+  - [Users Watchlist](#users-watchlist)
+  - [Ratings](#ratings)
+  - [Sign up](#sign-up)
+  - [Log in (Get Token)](#log-in-get-token)
+- [Admin site](#admin-site)
+  - [Creating super user](#creating-super-user)
+  - [View after logging in](#view-after-logging-in)
+  - [Interacting with the Admin site](#interacting-with-the-admin-site)
+    - [Creating a new user](#creating-a-new-user)
+      - [From admin site](#from-admin-site)
+      - [Through the `Users` admin site](#through-the-users-admin-site)
+    - [Editing a user](#editing-a-user)
+    - [Deleting a user](#deleting-a-user)
+    - [Other options](#other-options)
+- [Front-end user site](#front-end-user-site)
+- [Seeding the database](#seeding-the-database)
+  - [Executing the script locally](#executing-the-script-locally)
+  - [Executing the script on heroku](#executing-the-script-on-heroku)
+
 # Getting started with the project
 
 The following project involves the use of a JSON Web Token (JWT).
-
 
 ## Running the server locally
 
@@ -52,7 +80,7 @@ Now you'll need to follow the instructions to access the API and the Admin inter
 
 ## Using Heroku to access the backend
 
-The project is already linked and deployed with Heroku, this the URL:
+The project is already linked and deployed with Heroku, this is the URL:
 
 https://movies-backend-ns.herokuapp.com/
 
@@ -71,9 +99,9 @@ Using local server: localhost:8000/api/movies/
 
 ## Movies
 
-Get lists of movies: `movies/`
+**Get** lists of movies: `movies/`
 
-Post a new movie: `movies/`
+**Post** a new movie: `movies/`
 
 Fields necessary
 ```json
@@ -85,7 +113,7 @@ Fields necessary
 }
 ```
 
-Use the following to get a single movie or delete it: `movies/<str:slug>/`
+Use the following to **get** a single movie, update it (method=`PUT`) or **delete** it: `movies/<str:slug>/`
 
 *The slug is auto-generated when introducing a title. E.g.: The Last Samurai = the-last-samurai
 
@@ -142,7 +170,7 @@ E.g.: Post Data
 }
 ```
 
-# Admin View
+# Admin site
 
 You'll need to add `admin/` to the base URL.
 
@@ -152,6 +180,10 @@ Using Heroku: https://movies-backend-ns.herokuapp.com/admin/
 Using local server: localhost:8000/admin/
 ```
 
+This should be the expected output if you're not logged in:
+
+![django-admin-log-in](https://drive.google.com/uc?export=view&id=1UvQ1IcgRzPIJ6Jamf3VzCmPgj57yNkq1)
+
 ## Creating super user
 
 If you're running locally, then you can create a super user with:
@@ -160,5 +192,118 @@ If you're running locally, then you can create a super user with:
 django-admin createsuperuser
 ```
 
-Follow the instructions of the terminal
+Follow the instructions of the terminal (you can leave the email field empty).
 
+## View after logging in
+
+You'll be welcomed by the Django default Admin site:
+
+![django-admin-view-image](https://drive.google.com/uc?export=view&id=1FD8ofIbSfbRrNoxuPTPXC8AGZAavU8Yp)
+
+As you can see, we have the four categories we're interested in:
+
+- Users
+- Movies
+- Ratings
+- Watchlists
+
+## Interacting with the Admin site
+
+You can easily add a new entry by clicking the (:heavy_plus_sign:`Add`) option.
+
+For other options, you can click the name of what you're interested.
+E.g.: For checking the `users` then click either `Users` or the `Change` that's within the `Users` row.
+
+### Creating a new user
+
+#### From admin site
+
+Click (:heavy_plus_sign:`Add`) that's within the `Users` row. You'll see the following output:
+
+![django-admin-create-new-user](https://drive.google.com/uc?export=view&id=1UIjPoOMzsbgPWoilfihBliADTNoHiKGD)
+
+By this point, you only need to fill the form and save.
+
+<hr style="border-bottom:1px dashed">
+
+#### Through the `Users` admin site
+
+Click `Users` (Within the Authentication and authorization section) and you'll see the following output:
+
+![django-admin-user-view](https://drive.google.com/uc?export=view&id=1yiGCWewQYojUL8eMvBLXYuoZ_IVO9QpH)
+
+What you're seeing is something that we'll call the "`user admin site`". Now click "Add user", fill and save.
+
+### Editing a user
+
+From within the "`user admin site`", just click any user you'd like to edit and this will be output:
+
+![django-admin-edit-user](https://drive.google.com/uc?export=view&id=1bSvA4XAqojtZPFgO7MCumFsHNb6QdKke)
+
+Change whatever you want.
+
+### Deleting a user
+
+From witih the "`user admin site`":
+- Click the checkbox that's beside the user you want to delete
+- In the **Action** dropdown menu, select *Delete selected users*.
+- Click **Go**.
+- Confirm.
+
+This will be what it'll look like after following the first to steps:
+
+![django-admin-delete-user](https://drive.google.com/uc?export=view&id=1aEgAO2lCxhtVIurOk1n1VOOzYjXvGQLS)
+
+### Other options
+
+You can use the previous instructions for any other thing you're interested.
+
+E.g.: Following the instructions with `Movies` in order to create a new movie should take you to this site
+
+![django-admin-create-movie](https://drive.google.com/uc?export=view&id=1n7B3-JQtxGSCU4q1cdJ-KksWdp6WdhM7)
+
+# Front-end user site
+
+The frontend has also been deployed on heroku, [click here](https://movie-frontend-ns.herokuapp.com) and you'll see the home page:
+
+![django-frontend-site](https://drive.google.com/uc?export=view&id=1ZzN41MXDjnKkKAMVvkZOXVejzgUDhV3D)
+
+The aforementioned is also on Github, [click here](https://github.com/sast-ctrl/movies_frontend) to go the repository and check the details.
+
+# Seeding the database
+
+In order to fill the database with movies information, [themoviedb](https://www.themoviedb.org/) API is used with a local script called '`seed_script.py'`. But the current version of the script does not handle the "duplicated item" error, so you need to delete all the movies before doing a seed.
+
+## Executing the script locally
+
+Type and run the following command from within the project directory:
+
+```
+python manage.py shell
+```
+
+Now, within the shell, type and run this command:
+
+```py
+exec( open('seed_script.py').read() )
+```
+
+It outputs '-----Saved-----' per each successful upload.
+
+## Executing the script on heroku
+
+When you've created the app for the backend, you can click on '**More**' to get access to the console (click `Run console`):
+
+![django-heroku](https://drive.google.com/uc?export=view&id=14RMvkhzk3f5X1y15oBiIpaSyD8NfvBOq)
+
+Now you just need to type and run this on the bash:
+
+```
+python manage.py shell
+```
+
+And execute this line on the shell:
+
+```py
+exec( open('seed_script.py').read() )
+```
