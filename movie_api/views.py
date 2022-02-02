@@ -1,8 +1,4 @@
-# from django.shortcuts import render
-
-# Create your views here.
 from rest_framework import status
-# from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Movie, Rating, Watchlist
@@ -16,6 +12,7 @@ from django.contrib.auth.models import User
 from rest_framework.permissions import AllowAny
 
 class SignupView(APIView):
+
     permission_classes = [AllowAny]
     # Create new user
     def post(self, request, format=None):
@@ -31,7 +28,6 @@ class MovieLists(APIView):
     List all movies, or create a new movie.
     """
     def get(self, request, format=None):
-        
         movies= Movie.objects.all()
         serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data)
@@ -50,10 +46,12 @@ class MovieDetails(APIView):
             return Movie.objects.get(slug=slug)
         except Movie.DoesNotExist:
             raise Http404
+
     def get(self, request, slug, format=None):
         movie = self.get_object(slug)
         serializer = MovieSerializer(movie)
         return Response(serializer.data)
+
     def put(self, request, slug, format=None):
         movie = self.get_object(slug)
         serializer = MovieSerializer(movie, data=request.data)
@@ -61,6 +59,7 @@ class MovieDetails(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     def delete(self, request, slug, format=None):
         movie = self.get_object(slug)
         movie.delete()
@@ -85,15 +84,14 @@ class RatingsList(APIView):
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
     def get_user(self):
-        
         user = self.request.user
         return user
 
     def perform_create(self, serializer):
-        
         serializer.save(author=self.get_user())
     
 class RatingsDetails(APIView):
+    
     def get_object(self, pk):
         try:
             return Rating.objects.get(pk=pk)

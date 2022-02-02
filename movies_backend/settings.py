@@ -30,12 +30,6 @@ SECRET_KEY = 'django-insecure-x^&a2g-2s(s&6wq0ddex=2dv#)0pj!_29eek!7iraqi*v*!5i(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-hostname = socket.gethostname()
-local_ip = socket.gethostbyname_ex(hostname)
-# ALLOWED_HOSTS = [str(local_ip) + ":8000"]
-# ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '[::1]']
-# ALLOWED_HOSTS = ['192.168.0.7']
-# ALLOWED_HOSTS = [local_ip[-1][-1], '.localhost', '127.0.0.1']
 ALLOWED_HOSTS = ['*']
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -50,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'corsheaders', #3rd party
+    'corsheaders',
     'movie_api',
     
 ]
@@ -74,7 +68,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',     # new
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

@@ -16,6 +16,4 @@ urlpatterns = [
 
     path('token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
-    # path('api_movies/', MovieListView.as_view(), name='movie_details'),
-    # path('api_movies/<slug:slug>', MovieDetail.as_view())
 ]

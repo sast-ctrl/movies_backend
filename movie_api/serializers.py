@@ -14,6 +14,7 @@ class SignupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
+        
         fields = [
             'username',
             'password',
@@ -38,17 +39,21 @@ class SignupSerializer(serializers.ModelSerializer):
 class AuthorSerializer(serializers.ModelSerializer):
     
     class Meta:
+        model = User
+
         fields = [
             'id',
             'username'
         ]
 
-        model = User
+        
 
 class RatingSerializer(serializers.ModelSerializer):
 
     author = AuthorSerializer(many=False, read_only=True)
     class Meta:
+        model = Rating
+
         fields = [
             'id',
             'author',
@@ -58,12 +63,13 @@ class RatingSerializer(serializers.ModelSerializer):
             'created_at'
         ]
 
-        model = Rating
+        
 
 class RatingSaveSerializer(serializers.ModelSerializer):
 
-    # author = AuthorSerializer(many=False, read_only=True)
     class Meta:
+        model = Rating
+
         fields = [
             'id',
             'author',
@@ -73,7 +79,7 @@ class RatingSaveSerializer(serializers.ModelSerializer):
             'created_at'
         ]
 
-        model = Rating
+        
 
 class MovieSerializer(serializers.ModelSerializer):
     ratings = RatingSerializer(many=True, read_only=True)
@@ -82,6 +88,8 @@ class MovieSerializer(serializers.ModelSerializer):
     def get_avg_rating(self, ob):
         return ob.ratings.all().aggregate(Avg('rating'))['rating__avg'] or 0
     class Meta:
+        model = Movie
+
         fields = [
             'id',
             'title',
@@ -93,46 +101,52 @@ class MovieSerializer(serializers.ModelSerializer):
             'ratings'
         ]
         
-        model = Movie
+        
 
 class WatchlistMovieSerializer(serializers.ModelSerializer):
     class Meta:
+        model = Movie
+
         fields = [
             'id',
             'title',
         ]
         
-        model = Movie
+        
 
 class WatchlistSerializer(serializers.ModelSerializer):
     movie = WatchlistMovieSerializer(many=False, read_only=True)
     class Meta:
+        model = Watchlist
+
         fields = [
             'id',
             'movie',
             'created_at'
         ]
-        model = Watchlist
+        
 
 class WatchlistUserSerializer(serializers.ModelSerializer):
-    # movie = WatchlistMovieSerializer(many=False, read_only=True)
+
     class Meta:
+        model = Watchlist
+
         fields = [
             'id',
             'movie',
             'created_at'
         ]
-        model = Watchlist
+        
 
 class AuthorWatchlistSerializer(serializers.ModelSerializer):
-    # Text
+    
     watchlist = WatchlistSerializer(many = True, read_only=True)
     class Meta:
+        model = User
+
         fields = [
             'id',
             'username',
             'watchlist'
         ]
-        model = User
-
     

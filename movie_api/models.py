@@ -6,7 +6,6 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
 from django.core.validators import MaxValueValidator
-# Create your models here.
 
 
 class Movie(models.Model):
